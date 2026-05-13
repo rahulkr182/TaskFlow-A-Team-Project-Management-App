@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { BarChart3, AlertTriangle, CheckCircle2, Clock, CheckSquare, Calendar, Activity, Zap } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, CheckSquare, Calendar, Activity, Zap } from 'lucide-react';
 import api from '../../api/axios';
 
 export default function DashboardPage() {

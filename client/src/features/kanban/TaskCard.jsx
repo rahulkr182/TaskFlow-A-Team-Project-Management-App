@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Calendar, MessageSquare, Paperclip } from 'lucide-react';
+import { Calendar, Paperclip } from 'lucide-react';
 
 export default function TaskCard({ task, onClick, isOverlay }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task._id });

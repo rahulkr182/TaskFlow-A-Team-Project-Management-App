@@ -2,8 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, closestCorners } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Plus, Users, Settings, Activity } from 'lucide-react';
+import { Plus, Settings, Activity } from 'lucide-react';
 import api from '../../api/axios';
 import KanbanColumn from './KanbanColumn';
 import TaskCard from './TaskCard';
@@ -12,7 +11,12 @@ import TaskDetailModal from './TaskDetailModal';
 import ProjectSettingsModal from '../projects/ProjectSettingsModal';
 import ActivityLogModal from '../projects/ActivityLogModal';
 import { getSocket } from '../../socket/socketClient';
-import toast from 'react-hot-toast';
+
+const defaultColumns = [
+  { name: 'To Do', order: 0 },
+  { name: 'In Progress', order: 1 },
+  { name: 'Done', order: 2 },
+];
 
 export default function KanbanBoard() {
   const { projectId } = useParams();
@@ -29,18 +33,14 @@ export default function KanbanBoard() {
     queryFn: async () => (await api.get(`/projects/${projectId}`)).data,
   });
 
-  const { data: taskData, isLoading } = useQuery({
+  const { data: taskData } = useQuery({
     queryKey: ['tasks', projectId],
     queryFn: async () => (await api.get(`/tasks/project/${projectId}`)).data,
   });
 
   const project = projectData?.project;
-  const tasks = taskData?.tasks || [];
-  const columns = project?.columns || [
-    { name: 'To Do', order: 0 },
-    { name: 'In Progress', order: 1 },
-    { name: 'Done', order: 2 },
-  ];
+  const tasks = useMemo(() => taskData?.tasks || [], [taskData?.tasks]);
+  const columns = useMemo(() => project?.columns || defaultColumns, [project?.columns]);
 
   // Socket.io real-time updates
   useEffect(() => {
@@ -79,12 +79,6 @@ export default function KanbanBoard() {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
-
-  // Move mutation
-  const moveMutation = useMutation({
-    mutationFn: ({ taskId, column, order }) => api.put(`/tasks/${taskId}/move`, { column, order }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks', projectId] }),
-  });
 
   const reorderMutation = useMutation({
     mutationFn: (tasksArr) => api.put('/tasks/reorder', { tasks: tasksArr }),

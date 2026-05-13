@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { Bell, Check, CheckCheck, UserPlus, MessageSquare, Calendar, ClipboardList } from 'lucide-react';
+import { Bell, CheckCheck, UserPlus, MessageSquare, Calendar, ClipboardList } from 'lucide-react';
 import api from '../../api/axios';
 import { getSocket } from '../../socket/socketClient';
 
@@ -12,7 +12,7 @@ const iconMap = {
   task_updated: ClipboardList,
 };
 
-export default function NotificationDropdown({ onClose }) {
+export default function NotificationDropdown() {
   const queryClient = useQueryClient();
   const { data } = useQuery({
     queryKey: ['notifications'],

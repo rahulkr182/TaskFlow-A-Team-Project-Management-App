@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { X, UserPlus, Trash2, Save, Activity } from 'lucide-react';
+import { X, UserPlus, Trash2, Save } from 'lucide-react';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 

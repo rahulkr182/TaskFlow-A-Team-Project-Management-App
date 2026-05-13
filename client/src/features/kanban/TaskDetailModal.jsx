@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { X, Calendar, User, Flag, Paperclip, MessageSquare, Trash2, Send, Upload } from 'lucide-react';
 import api from '../../api/axios';
