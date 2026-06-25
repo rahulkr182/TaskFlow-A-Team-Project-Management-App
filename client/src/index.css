@@ -3,7 +3,7 @@
 
 /* Custom Design System */
 @theme {
-  /* Minimal Slate SaaS Theme */
+  /* Premium Slate SaaS Theme */
   --color-primary-50: #eef2ff;
   --color-primary-100: #e0e7ff;
   --color-primary-200: #c7d2fe;
@@ -17,6 +17,8 @@
 
   --color-accent-blue: #3b82f6; 
   --color-accent-cyan: #0ea5e9;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-pink: #ec4899;
 
   /* Premium Dark Slate Surface Colors */
   --color-surface-50: #f8fafc;
@@ -28,8 +30,8 @@
   --color-surface-600: #475569;
   --color-surface-700: #334155; /* Soft borders */
   --color-surface-800: #1e293b; /* Sidebar / Accents */
-  --color-surface-900: #111827; /* Card background */
-  --color-surface-950: #0f172a; /* App background (dark slate) */
+  --color-surface-900: #0f172a; /* Card background */
+  --color-surface-950: #020617; /* App background (deep slate) */
 
   --color-success: #10b981;
   --color-warning: #f59e0b;
@@ -54,6 +56,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
 }
 
 /* Scrollbar styling */
@@ -72,33 +77,63 @@ body {
   background: var(--color-surface-600);
 }
 
-/* Minimal SaaS Cards */
+/* Premium Glass Cards */
 .glass {
-  background: var(--color-surface-900);
-  border: 1px solid var(--color-surface-700);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border-color: var(--color-surface-600);
+  box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.3), 0 8px 10px -2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.glass-premium {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
 }
 
 .glass-light {
-  background: var(--color-surface-800);
-  border: 1px solid var(--color-surface-700);
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
 }
 
-/* Gradient text */
+/* Gradients */
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: linear-gradient(135deg, #818cf8, #c084fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  border-radius: inherit;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gradient-border:hover::before {
+  opacity: 1;
 }
 
 /* Animations */
@@ -112,6 +147,11 @@ body {
   to { opacity: 1; transform: translateX(0); }
 }
 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -122,29 +162,35 @@ body {
   50% { opacity: 0.5; transform: scale(1.1); }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.6); }
 }
 
-.animate-slideInRight {
-  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+.animate-fadeIn { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-slideInRight { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-slideUp { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-ambient { animation: ambient-pulse 10s ease-in-out infinite; }
+.animate-glow { animation: glow-pulse 3s infinite; }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-ambient {
-  animation: ambient-pulse 10s ease-in-out infinite;
-}
-
-/* Priority colors */
+/* Priority Colors */
 .priority-low { color: #10b981; }
 .priority-medium { color: #f59e0b; }
 .priority-high { color: #f97316; }
 .priority-urgent { color: #ef4444; }
 
-.priority-badge-low { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.1); }
-.priority-badge-medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.1); }
-.priority-badge-high { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.1); }
-.priority-badge-urgent { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.1); }
+.priority-badge-low { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+.priority-badge-medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
+.priority-badge-high { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.2); }
+.priority-badge-urgent { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+/* Input Styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}

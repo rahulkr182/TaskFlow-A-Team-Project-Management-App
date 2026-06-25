@@ -1,13 +1,21 @@
 import { Bell, Menu, LogOut, Search } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '../../store/authStore';
 import NotificationDropdown from '../../features/notifications/NotificationDropdown';
+import api from '../../api/axios';
 
 export default function Topbar({ onMenuClick }) {
   const { user, logout } = useAuthStore();
   const [showUser, setShowUser] = useState(false);
   const [showNotifs, setShowNotifs] = useState(false);
   const userRef = useRef(null);
+  const { data: notifData } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: async () => (await api.get('/notifications')).data,
+    staleTime: 30_000,
+  });
+  const unreadCount = notifData?.unreadCount || 0;
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -25,7 +33,7 @@ export default function Topbar({ onMenuClick }) {
     .slice(0, 2);
 
   return (
-    <header className="h-16 bg-surface-950 border-b border-surface-700 flex items-center justify-between px-6 sticky top-0 z-20">
+    <header className="h-16 bg-surface-950/60 backdrop-blur-xl border-b border-surface-700/50 flex items-center justify-between px-6 sticky top-0 z-20">
       <div className="flex items-center gap-4 flex-1">
         <button onClick={onMenuClick} className="p-2.5 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-surface-100 transition-colors duration-200 lg:hidden">
           <Menu className="w-5 h-5" />
@@ -51,10 +59,14 @@ export default function Topbar({ onMenuClick }) {
         <div className="relative">
           <button
             onClick={() => { setShowNotifs(!showNotifs); setShowUser(false); }}
-            className="p-2 rounded-lg hover:bg-surface-800 text-surface-400 hover:text-surface-100 transition-colors duration-200 relative"
+            className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-surface-100 transition-all duration-200 relative group"
           >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full border border-surface-950" />
+            <Bell className="w-5 h-5 group-hover:animate-swing" />
+            {unreadCount > 0 && (
+              <span className="absolute top-0.5 right-0.5 min-w-4 h-4 px-1 rounded-full bg-primary-500 text-[10px] text-white font-semibold leading-4 text-center border border-surface-950 shadow-[0_0_8px_rgba(99,102,241,0.8)] animate-pulse">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
           </button>
           {showNotifs && <NotificationDropdown onClose={() => setShowNotifs(false)} />}
         </div>

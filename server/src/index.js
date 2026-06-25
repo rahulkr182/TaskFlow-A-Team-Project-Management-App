@@ -55,6 +55,14 @@ app.use('/api/activity', activityRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Health check
+app.get('/', (req, res) => {
+  res.json({
+    name: 'TaskFlow API',
+    status: 'ok',
+    health: '/api/health',
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });

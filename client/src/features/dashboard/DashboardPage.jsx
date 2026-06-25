@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { AlertTriangle, CheckCircle2, CheckSquare, Calendar, Activity, Zap } from 'lucide-react';
 import api from '../../api/axios';
 
@@ -39,33 +40,52 @@ export default function DashboardPage() {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="space-y-8 animate-fadeIn max-w-7xl mx-auto">
-      <div>
-        <h1 className="text-2xl font-bold text-surface-100 tracking-tight">Welcome back</h1>
+    <motion.div 
+      initial="hidden"
+      animate="show"
+      variants={containerVariants}
+      className="space-y-8 max-w-7xl mx-auto"
+    >
+      <motion.div variants={itemVariants}>
+        <h1 className="text-3xl font-bold text-surface-100 tracking-tight">Welcome back</h1>
         <p className="text-surface-400 text-sm mt-1">Here's what's happening in your workspace today.</p>
-      </div>
+      </motion.div>
 
       {/* A. Overview Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {overviewStats.map((stat, index) => (
-          <div key={index} className="glass p-5 hover:border-surface-600 transition-colors cursor-pointer group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-medium text-surface-400 group-hover:text-surface-300 transition-colors">{stat.label}</span>
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.bgColor}`}>
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
+          <motion.div key={index} variants={itemVariants} className="glass p-5 hover:border-primary-500/30 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none" />
+            <div className="flex items-center justify-between mb-4 relative z-10">
+              <span className="text-sm font-medium text-surface-400 group-hover:text-surface-200 transition-colors">{stat.label}</span>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.bgColor} shadow-sm group-hover:scale-110 transition-transform`}>
+                <stat.icon className={`w-5 h-5 ${stat.color}`} />
               </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-surface-100">{stat.value}</span>
+            <div className="flex items-baseline gap-2 relative z-10">
+              <span className="text-4xl font-extrabold text-surface-100 tracking-tight">{stat.value}</span>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* B. Action Section (What should you do next?) */}
-        <div className="lg:col-span-2 glass p-6 flex flex-col">
+        <motion.div variants={itemVariants} className="lg:col-span-2 glass-premium p-6 flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-base font-semibold text-surface-100 flex items-center gap-2">
               <Zap className="w-4 h-4 text-warning" />
@@ -108,7 +128,7 @@ export default function DashboardPage() {
         </div>
 
         {/* C. Task Status Visualization */}
-        <div className="glass p-6">
+        <motion.div variants={itemVariants} className="glass p-6">
           <h3 className="text-base font-semibold text-surface-100 mb-6">Task Distribution</h3>
           <div className="space-y-6">
             {columns.map((col) => {
@@ -134,7 +154,7 @@ export default function DashboardPage() {
       </div>
 
       {/* D. Recent Tasks */}
-      <div className="glass p-6">
+      <motion.div variants={itemVariants} className="glass p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-base font-semibold text-surface-100">Recent Tasks</h3>
           <button className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors">View all</button>
@@ -189,8 +209,8 @@ export default function DashboardPage() {
             </table>
           </div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

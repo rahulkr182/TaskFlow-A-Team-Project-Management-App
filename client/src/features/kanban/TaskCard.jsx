@@ -27,15 +27,15 @@ export default function TaskCard({ task, onClick, isOverlay }) {
       style={!isOverlay ? style : undefined}
       {...(!isOverlay ? { ...attributes, ...listeners } : {})}
       onClick={onClick}
-      className={`glass-light rounded-xl p-4 cursor-pointer border-l-[3px] ${priorityColors[task.priority] || 'border-l-surface-600'} hover:bg-surface-700/40 transition-all group ${
-        isOverlay ? 'shadow-2xl scale-105 rotate-2' : ''
+      className={`glass rounded-xl p-4 cursor-pointer border-l-[4px] ${priorityColors[task.priority] || 'border-l-surface-600'} hover:-translate-y-1 hover:shadow-lg hover:border-surface-500 transition-all duration-300 group ${
+        isOverlay ? 'shadow-2xl scale-105 rotate-2 z-50 bg-surface-800' : ''
       }`}
     >
       {/* Labels */}
       {task.labels?.length > 0 && (
-        <div className="flex gap-1.5 mb-2 flex-wrap">
+        <div className="flex gap-1.5 mb-3 flex-wrap">
           {task.labels.slice(0, 3).map((label) => (
-            <span key={label} className="text-[10px] px-2 py-0.5 rounded-full bg-primary-500/15 text-primary-400 font-medium">
+            <span key={label} className="text-[10px] px-2 py-0.5 rounded-md bg-primary-500/20 text-primary-300 font-semibold uppercase tracking-wider border border-primary-500/20">
               {label}
             </span>
           ))}

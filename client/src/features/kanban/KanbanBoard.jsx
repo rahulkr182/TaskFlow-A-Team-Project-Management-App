@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, closestCorners } from '@dnd-kit/core';
@@ -144,12 +145,17 @@ export default function KanbanBoard() {
   };
 
   return (
-    <div className="animate-fadeIn">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-[100vw]"
+    >
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 glass-premium p-6 mt-2">
         <div>
-          <h1 className="text-2xl font-bold text-surface-100">{project?.name || 'Board'}</h1>
-          <p className="text-surface-400 text-sm mt-1">{tasks.length} task{tasks.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-3xl font-bold text-surface-100 tracking-tight">{project?.name || 'Board'}</h1>
+          <p className="text-surface-400 text-sm mt-1">{tasks.length} task{tasks.length !== 1 ? 's' : ''} in progress</p>
         </div>
         <div className="flex items-center gap-2">
           {/* Member avatars */}
@@ -178,7 +184,7 @@ export default function KanbanBoard() {
 
       {/* Kanban Columns */}
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto pb-4" style={{ minHeight: 'calc(100vh - 200px)' }}>
+        <div className="flex gap-6 overflow-x-auto pb-6 custom-scrollbar" style={{ minHeight: 'calc(100vh - 240px)' }}>
           {columns.sort((a, b) => a.order - b.order).map((col) => (
             <KanbanColumn
               key={col.name}
@@ -198,6 +204,6 @@ export default function KanbanBoard() {
       {selectedTask && <TaskDetailModal taskId={selectedTask} projectId={projectId} members={project?.members || []} onClose={() => setSelectedTask(null)} />}
       {showSettings && project && <ProjectSettingsModal project={project} onClose={() => setShowSettings(false)} />}
       {showActivity && <ActivityLogModal projectId={projectId} onClose={() => setShowActivity(false)} />}
-    </div>
+    </motion.div>
   );
 }

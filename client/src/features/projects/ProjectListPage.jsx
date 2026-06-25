@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { Plus, FolderOpen, Users, ListTodo } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -15,11 +16,29 @@ export default function ProjectListPage() {
 
   const projects = data?.projects || [];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="space-y-6 animate-fadeIn">
-      <div className="flex items-center justify-between">
+    <motion.div 
+      initial="hidden"
+      animate="show"
+      variants={containerVariants}
+      className="space-y-6 max-w-7xl mx-auto"
+    >
+      <motion.div variants={itemVariants} className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-surface-100">Projects</h1>
+          <h1 className="text-3xl font-bold text-surface-100 tracking-tight">Projects</h1>
           <p className="text-surface-400 text-sm mt-1">{projects.length} project{projects.length !== 1 ? 's' : ''}</p>
         </div>
         <button
@@ -33,11 +52,11 @@ export default function ProjectListPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="glass rounded-2xl p-6 h-48 animate-pulse" />
+            <motion.div variants={itemVariants} key={i} className="glass rounded-2xl p-6 h-48 animate-pulse" />
           ))}
-        </div>
+        </motion.div>
       ) : projects.length === 0 ? (
         <div className="text-center py-20">
           <FolderOpen className="w-16 h-16 mx-auto mb-4 text-surface-700" />
@@ -48,14 +67,16 @@ export default function ProjectListPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <div
+            <motion.div
+              variants={itemVariants}
               key={project._id}
               onClick={() => navigate(`/projects/${project._id}/board`)}
-              className="glass rounded-2xl p-6 cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary-500/5 transition-all duration-200 group"
+              className="glass p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 hover:border-surface-600 transition-all duration-300 group relative overflow-hidden"
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none" />
+              <div className="flex items-start justify-between mb-4 relative z-10">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: (project.color || '#6366f1') + '20' }}>
                   <FolderOpen className="w-5 h-5" style={{ color: project.color || '#6366f1' }} />
                 </div>
@@ -68,10 +89,10 @@ export default function ProjectListPage() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       )}
 
       {showCreate && <CreateProjectModal onClose={() => setShowCreate(false)} />}
-    </div>
+    </motion.div>
   );
 }
