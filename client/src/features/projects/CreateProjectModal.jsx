@@ -28,25 +28,34 @@ export default function CreateProjectModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="glass rounded-2xl p-6 w-full max-w-md animate-fadeIn shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-50 p-4 pt-20" onClick={onClose}>
+      <div 
+        className="glass-premium rounded-2xl p-6 w-full max-w-md shadow-2xl border border-surface-700 animate-slideDown" 
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-xl font-bold text-surface-100">New Project</h2>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 transition">
-            <X className="w-5 h-5" />
+          <h2 className="text-xl font-bold text-surface-100 overflow-hidden whitespace-nowrap border-r-2 border-primary-500 pr-2" style={{ width: 'fit-content', animation: 'typing 1s steps(15, end), blink-caret .75s step-end infinite' }}>
+            New Project
+          </h2>
+          <style>{`
+            @keyframes typing { from { width: 0 } to { width: 100% } }
+            @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--color-primary-500); } }
+          `}</style>
+          <button onClick={onClose} className="p-2 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-white transition-colors group">
+            <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-surface-300 mb-1.5">Name</label>
             <input id="project-name" value={name} onChange={(e) => setName(e.target.value)} required
-              className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm"
+              className="w-full px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 placeholder-surface-500 focus-ring text-sm transition-all"
               placeholder="My Awesome Project" />
           </div>
           <div>
             <label className="block text-sm font-medium text-surface-300 mb-1.5">Description</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3}
-              className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm resize-none"
+              className="w-full px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 placeholder-surface-500 focus-ring text-sm resize-none transition-all"
               placeholder="What's this project about?" />
           </div>
           <div>

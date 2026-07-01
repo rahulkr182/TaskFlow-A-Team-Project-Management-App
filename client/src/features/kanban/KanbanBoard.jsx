@@ -149,8 +149,17 @@ export default function KanbanBoard() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-[100vw]"
+      className="max-w-[100vw] relative"
     >
+      {/* Project specific subtle background glow */}
+      {project?.color && (
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-20 blur-[150px] mix-blend-screen"
+          style={{ 
+            background: `radial-gradient(circle at 50% 0%, ${project.color}, transparent 60%)` 
+          }} 
+        />
+      )}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 glass-premium p-6 mt-2">
         <div>
@@ -184,7 +193,7 @@ export default function KanbanBoard() {
 
       {/* Kanban Columns */}
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
-        <div className="flex gap-6 overflow-x-auto pb-6 custom-scrollbar" style={{ minHeight: 'calc(100vh - 240px)' }}>
+        <div className="flex gap-6 overflow-x-auto pb-6 custom-scrollbar relative z-10" style={{ minHeight: 'calc(100vh - 240px)' }}>
           {columns.sort((a, b) => a.order - b.order).map((col) => (
             <KanbanColumn
               key={col.name}

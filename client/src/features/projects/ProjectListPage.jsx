@@ -58,22 +58,37 @@ export default function ProjectListPage() {
           ))}
         </motion.div>
       ) : projects.length === 0 ? (
-        <div className="text-center py-20">
-          <FolderOpen className="w-16 h-16 mx-auto mb-4 text-surface-700" />
+        <div className="text-center py-20 flex flex-col items-center justify-center">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', damping: 20 }}
+            className="w-32 h-32 mb-6 text-surface-700 relative"
+          >
+            <FolderOpen className="w-full h-full opacity-50" />
+            <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }} className="absolute -top-4 -right-4 w-12 h-12 bg-primary-500/20 rounded-full blur-xl pointer-events-none" />
+          </motion.div>
           <h3 className="text-xl font-semibold text-surface-300 mb-2">No projects yet</h3>
           <p className="text-surface-500 mb-6">Create your first project to start managing tasks</p>
-          <button onClick={() => setShowCreate(true)} className="px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-medium transition">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowCreate(true)} 
+            className="px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-medium transition-colors shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]"
+          >
             Create Project
-          </button>
+          </motion.button>
         </div>
       ) : (
         <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <motion.div
               variants={itemVariants}
+              whileHover={{ scale: 1.02, rotateY: 2, rotateX: 2 }}
               key={project._id}
               onClick={() => navigate(`/projects/${project._id}/board`)}
-              className="glass p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 hover:border-surface-600 transition-all duration-300 group relative overflow-hidden"
+              className="glass-premium p-6 cursor-pointer hover:shadow-2xl hover:shadow-primary-500/20 transition-all duration-300 group relative overflow-hidden gradient-border"
+              style={{ perspective: 1000 }}
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none" />
               <div className="flex items-start justify-between mb-4 relative z-10">

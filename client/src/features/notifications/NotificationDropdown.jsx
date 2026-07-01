@@ -42,7 +42,7 @@ export default function NotificationDropdown() {
   const unread = data?.unreadCount || 0;
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-96 glass rounded-2xl shadow-2xl animate-fadeIn overflow-hidden z-50">
+    <div className="absolute right-0 top-full mt-2 w-96 glass-premium rounded-2xl shadow-[0_20px_40px_-15px_rgba(99,102,241,0.2)] border border-surface-700 animate-slideDown overflow-hidden z-50 origin-top-right">
       <div className="flex items-center justify-between px-4 py-3 border-b border-surface-700/50">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-semibold text-surface-200">Notifications</h3>
@@ -57,11 +57,15 @@ export default function NotificationDropdown() {
         )}
       </div>
 
-      <div className="max-h-80 overflow-y-auto">
+      <div className="max-h-[22rem] overflow-y-auto custom-scrollbar">
         {notifications.length === 0 ? (
-          <div className="text-center py-10 text-surface-500">
-            <Bell className="w-10 h-10 mx-auto mb-2 opacity-30" />
-            <p className="text-sm">No notifications yet</p>
+          <div className="text-center py-12 text-surface-500 flex flex-col items-center">
+            <div className="w-16 h-16 bg-surface-800/50 rounded-full flex items-center justify-center mb-4 shadow-inner relative">
+              <Bell className="w-8 h-8 text-surface-600 absolute" />
+              <div className="w-8 h-8 rounded-full border-t-2 border-primary-500/30 animate-spin absolute" />
+            </div>
+            <p className="text-sm font-medium text-surface-300">You're all caught up</p>
+            <p className="text-xs text-surface-500 mt-1">No new notifications</p>
           </div>
         ) : (
           notifications.slice(0, 20).map((n) => {
@@ -74,14 +78,16 @@ export default function NotificationDropdown() {
                   !n.read ? 'bg-primary-500/5' : ''
                 }`}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${!n.read ? 'bg-primary-500/15 text-primary-400' : 'bg-surface-800 text-surface-500'}`}>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${!n.read ? 'bg-primary-500/20 text-primary-400 shadow-[0_0_15px_rgba(99,102,241,0.3)]' : 'bg-surface-800 text-surface-500'}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm ${!n.read ? 'text-surface-200' : 'text-surface-400'}`}>{n.message}</p>
-                  <p className="text-xs text-surface-600 mt-0.5">{formatTime(n.createdAt)}</p>
+                  <p className={`text-sm font-medium ${!n.read ? 'text-surface-100' : 'text-surface-400'}`}>{n.message}</p>
+                  <p className="text-xs text-surface-600 mt-1 font-medium tracking-wide uppercase">{formatTime(n.createdAt)}</p>
                 </div>
-                {!n.read && <div className="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0" />}
+                {!n.read && (
+                  <div className="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0 animate-glow shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
+                )}
               </div>
             );
           })

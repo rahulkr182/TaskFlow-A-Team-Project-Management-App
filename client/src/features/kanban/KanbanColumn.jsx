@@ -16,8 +16,8 @@ export default function KanbanColumn({ column, tasks, onAddTask, onTaskClick }) 
   return (
     <div
       ref={setNodeRef}
-      className={`flex-shrink-0 w-80 flex flex-col rounded-2xl glass transition-all duration-300 ${
-        isOver ? 'bg-primary-500/10 ring-2 ring-primary-500/30 shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'border-surface-700/50'
+      className={`flex-shrink-0 w-80 flex flex-col rounded-2xl glass-light transition-all duration-300 shadow-[inset_0_2px_15px_rgba(255,255,255,0.02)] ${
+        isOver ? 'bg-primary-500/10 ring-2 ring-primary-500/30 shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'border-surface-700/30 hover:border-surface-600/50 hover:bg-surface-800/20'
       }`}
     >
       {/* Header */}

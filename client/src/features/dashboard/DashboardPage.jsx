@@ -68,7 +68,7 @@ export default function DashboardPage() {
       {/* A. Overview Section */}
       <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {overviewStats.map((stat, index) => (
-          <motion.div key={index} variants={itemVariants} className="glass p-5 hover:border-primary-500/30 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)] relative overflow-hidden">
+          <motion.div key={index} variants={itemVariants} className="glass-premium p-5 hover:border-primary-500/50 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_30px_rgba(99,102,241,0.2)] relative overflow-hidden transform hover:-translate-y-1">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none" />
             <div className="flex items-center justify-between mb-4 relative z-10">
               <span className="text-sm font-medium text-surface-400 group-hover:text-surface-200 transition-colors">{stat.label}</span>
@@ -141,9 +141,12 @@ export default function DashboardPage() {
                     <span className="text-sm font-medium text-surface-400">{count}</span>
                   </div>
                   <div className="h-2 bg-surface-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${pct}%`, backgroundColor: colColors[col] }}
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 1, ease: "easeOut" }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: colColors[col] }}
                     />
                   </div>
                 </div>
@@ -184,9 +187,9 @@ export default function DashboardPage() {
               </thead>
               <tbody className="divide-y divide-surface-800/50">
                 {stats.recentTasks.slice(0, 5).map((task) => (
-                  <tr key={task._id} className="hover:bg-surface-800/30 transition-colors group">
+                  <tr key={task._id} className="hover:bg-surface-800/60 transition-colors group cursor-pointer">
                     <td className="py-3 px-2">
-                      <p className="text-sm font-medium text-surface-200">{task.title}</p>
+                      <p className="text-sm font-medium text-surface-200 group-hover:text-white transition-colors">{task.title}</p>
                       <p className="text-xs text-surface-500 mt-0.5">{task.project?.name}</p>
                     </td>
                     <td className="py-3 px-2">
@@ -217,10 +220,10 @@ export default function DashboardPage() {
 function DashboardSkeleton() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
-      <div><div className="h-8 w-40 bg-surface-800 rounded-lg animate-pulse" /></div>
+      <div><div className="h-8 w-40 rounded-lg shimmer-bg" /></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="glass p-5 h-24 animate-pulse"><div className="w-10 h-10 bg-surface-800 rounded-xl" /></div>
+          <div key={i} className="glass-premium p-5 h-24 shimmer-bg rounded-xl"><div className="w-10 h-10 bg-surface-800 rounded-xl opacity-0" /></div>
         ))}
       </div>
     </div>

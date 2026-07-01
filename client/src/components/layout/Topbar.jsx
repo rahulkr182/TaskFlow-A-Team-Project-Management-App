@@ -33,15 +33,16 @@ export default function Topbar({ onMenuClick }) {
     .slice(0, 2);
 
   return (
-    <header className="h-16 bg-surface-950/60 backdrop-blur-xl border-b border-surface-700/50 flex items-center justify-between px-6 sticky top-0 z-20">
+    <header className="h-16 bg-surface-950/60 backdrop-blur-xl border-b border-surface-700/50 flex items-center justify-between px-6 sticky top-0 z-20 relative">
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-50" />
       <div className="flex items-center gap-4 flex-1">
         <button onClick={onMenuClick} className="p-2.5 rounded-xl hover:bg-surface-800 text-surface-400 hover:text-surface-100 transition-colors duration-200 lg:hidden">
           <Menu className="w-5 h-5" />
         </button>
         
         {/* Minimal Search Bar */}
-        <div className="hidden md:flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-900 border border-surface-700 focus-within:border-primary-500 transition-colors duration-200 w-full max-w-sm">
-          <Search className="w-4 h-4 text-surface-500" />
+        <div className="hidden md:flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-900 border border-surface-700 focus-within:border-primary-500 focus-within:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all duration-300 w-full max-w-sm group">
+          <Search className="w-4 h-4 text-surface-500 group-focus-within:text-primary-400 transition-colors" />
           <input 
             type="text" 
             placeholder="Search tasks, projects..." 
@@ -83,17 +84,17 @@ export default function Topbar({ onMenuClick }) {
             <span className="text-sm font-medium text-surface-300 hidden sm:block">{user?.name || 'User'}</span>
           </button>
           {showUser && (
-            <div className="absolute right-0 top-full mt-2 w-56 glass rounded-xl py-2 animate-fadeIn z-50">
-              <div className="px-4 py-3 border-b border-surface-700/50 mb-1">
+            <div className="absolute right-0 top-full mt-2 w-56 glass rounded-xl py-2 animate-scaleIn origin-top-right z-50">
+              <div className="px-4 py-3 border-b border-surface-700/50 mb-1 animate-slideInRight" style={{ animationDelay: '50ms', opacity: 0, animationFillMode: 'forwards' }}>
                 <p className="text-sm font-medium text-surface-100">{user?.name || 'User'}</p>
                 <p className="text-xs text-surface-400 mt-0.5 truncate">{user?.email || 'user@example.com'}</p>
               </div>
-              <div className="px-2">
+              <div className="px-2 animate-slideInRight" style={{ animationDelay: '100ms', opacity: 0, animationFillMode: 'forwards' }}>
                 <button
                   onClick={logout}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-danger hover:bg-danger/10 transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-danger hover:bg-danger/10 transition-colors group"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   Sign Out
                 </button>
               </div>

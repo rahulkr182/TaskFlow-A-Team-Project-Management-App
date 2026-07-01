@@ -12,14 +12,15 @@ export default function TaskCard({ task, onClick, isOverlay }) {
   };
 
   const priorityColors = {
-    low: 'border-l-emerald-500',
-    medium: 'border-l-amber-500',
-    high: 'border-l-orange-500',
-    urgent: 'border-l-red-500',
+    low: 'border-l-success shadow-[0_0_10px_rgba(16,185,129,0.1)]',
+    medium: 'border-l-warning shadow-[0_0_10px_rgba(245,158,11,0.1)]',
+    high: 'border-l-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.1)]',
+    urgent: 'border-l-danger shadow-[0_0_10px_rgba(239,68,68,0.1)] animate-glow',
   };
 
   const dueDate = task.dueDate ? new Date(task.dueDate) : null;
   const isOverdue = dueDate && dueDate < new Date() && task.column !== 'Done';
+  const isDueSoon = dueDate && (dueDate - new Date()) < 86400000 * 2 && task.column !== 'Done' && !isOverdue; // less than 2 days
 
   return (
     <div
@@ -27,10 +28,11 @@ export default function TaskCard({ task, onClick, isOverlay }) {
       style={!isOverlay ? style : undefined}
       {...(!isOverlay ? { ...attributes, ...listeners } : {})}
       onClick={onClick}
-      className={`glass rounded-xl p-4 cursor-pointer border-l-[4px] ${priorityColors[task.priority] || 'border-l-surface-600'} hover:-translate-y-1 hover:shadow-lg hover:border-surface-500 transition-all duration-300 group ${
-        isOverlay ? 'shadow-2xl scale-105 rotate-2 z-50 bg-surface-800' : ''
-      }`}
+      className={`glass-light rounded-xl p-4 cursor-pointer border-l-[4px] ${priorityColors[task.priority] || 'border-l-surface-600'} hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 transition-all duration-300 group relative overflow-hidden ${
+        isOverlay ? 'shadow-2xl scale-105 rotate-2 z-50 bg-surface-800/90 backdrop-blur-xl' : ''
+      } ${isOverdue ? 'ring-1 ring-danger/30' : ''} ${isDueSoon ? 'ring-1 ring-warning/30' : ''}`}
     >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-surface-700/5 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none rounded-xl" />
       {/* Labels */}
       {task.labels?.length > 0 && (
         <div className="flex gap-1.5 mb-3 flex-wrap">

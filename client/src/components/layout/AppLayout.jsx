@@ -9,7 +9,10 @@ export default function AppLayout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen flex bg-surface-950 text-surface-100 relative overflow-hidden">
+    <div className="min-h-screen flex bg-surface-950 mesh-bg text-surface-100 relative overflow-hidden">
+      {/* Ambient background orbs */}
+      <div className="absolute top-[10%] left-[20%] w-[500px] h-[500px] rounded-full bg-primary-600/10 blur-[120px] animate-ambient pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] rounded-full bg-accent-purple/10 blur-[100px] animate-ambient pointer-events-none" style={{ animationDelay: '3s' }} />
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex-1 flex flex-col min-h-screen transition-all duration-300 relative z-10" style={{ marginLeft: sidebarOpen ? '16rem' : '4.5rem' }}>
         <Topbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />

@@ -16,9 +16,9 @@ export default function Sidebar({ isOpen, onToggle }) {
   const projects = data?.projects || [];
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
+    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative ${
       isActive
-        ? 'text-primary-400 bg-primary-500/10 border border-primary-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)]'
+        ? 'text-primary-400 bg-primary-500/10 border border-primary-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)] animate-glow'
         : 'text-surface-400 hover:text-surface-100 hover:bg-surface-800/60'
     }`;
 
@@ -30,24 +30,29 @@ export default function Sidebar({ isOpen, onToggle }) {
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 py-5 border-b border-surface-700/50">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/30">
-            <Zap className="w-4 h-4 text-white" />
+          <div className="relative">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center shrink-0 shadow-lg shadow-primary-500/30 group cursor-pointer">
+              <Zap className="w-4 h-4 text-white group-hover:animate-swing" />
+            </div>
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-success rounded-full border-2 border-surface-950 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
           </div>
           {isOpen && (
-            <span className="text-lg font-bold text-surface-100 tracking-tight">TaskFlow</span>
+            <span className="text-lg font-bold text-surface-100 tracking-tight animate-fadeIn">TaskFlow</span>
           )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
           <div className="space-y-0.5 mb-6">
             <NavLink to="/dashboard" className={linkClass}>
-              <LayoutDashboard className="w-4 h-4 shrink-0" />
-              {isOpen && <span>Dashboard</span>}
+              <LayoutDashboard className="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform" />
+              {isOpen && <span className="animate-fadeIn">Dashboard</span>}
+              {!isOpen && <div className="absolute left-14 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all px-2 py-1 rounded-md glass-tooltip text-white text-xs whitespace-nowrap pointer-events-none z-50">Dashboard</div>}
             </NavLink>
             <NavLink to="/projects" className={linkClass}>
-              <FolderKanban className="w-4 h-4 shrink-0" />
-              {isOpen && <span>Projects</span>}
+              <FolderKanban className="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform" />
+              {isOpen && <span className="animate-fadeIn">Projects</span>}
+              {!isOpen && <div className="absolute left-14 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all px-2 py-1 rounded-md glass-tooltip text-white text-xs whitespace-nowrap pointer-events-none z-50">Projects</div>}
             </NavLink>
           </div>
 
@@ -70,13 +75,15 @@ export default function Sidebar({ isOpen, onToggle }) {
                   <button
                     key={project._id}
                     onClick={() => navigate(`/projects/${project._id}/board`)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-surface-400 hover:text-surface-100 hover:bg-surface-800/60 transition-all group"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-surface-400 hover:text-surface-100 hover:bg-surface-800/60 transition-all group relative overflow-hidden"
                   >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-surface-700/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
                     <div
-                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm group-hover:scale-125 transition-transform"
+                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm group-hover:scale-125 transition-transform relative z-10"
                       style={{ backgroundColor: project.color || '#6366f1', boxShadow: `0 0 8px ${project.color || '#6366f1'}80` }}
                     />
-                    <span className="truncate">{project.name}</span>
+                    <span className="truncate relative z-10 group-hover:text-white transition-colors">{project.name}</span>
+                    {!isOpen && <div className="absolute left-14 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all px-2 py-1 rounded-md glass-tooltip text-white text-xs whitespace-nowrap pointer-events-none z-50">{project.name}</div>}
                   </button>
                 ))}
               </div>

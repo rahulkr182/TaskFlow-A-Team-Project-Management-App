@@ -38,8 +38,8 @@ export default function ProjectSettingsModal({ project, onClose }) {
   });
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-50" onClick={onClose}>
-      <div className="w-full max-w-md glass h-full animate-slideInRight overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex justify-end z-50" onClick={onClose}>
+      <div className="w-full max-w-md glass-premium h-full animate-slideInRight overflow-y-auto border-l border-surface-700/50 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="p-6 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-surface-100">Project Settings</h2>
@@ -51,12 +51,12 @@ export default function ProjectSettingsModal({ project, onClose }) {
             <div>
               <label className="block text-sm font-medium text-surface-300 mb-1.5">Project Name</label>
               <input value={name} onChange={(e) => setName(e.target.value)} 
-                className="w-full px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm" />
+                className="w-full px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 focus-ring text-sm transition-all" />
             </div>
             <div>
               <label className="block text-sm font-medium text-surface-300 mb-1.5">Description</label>
               <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3}
-                className="w-full px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm resize-none" />
+                className="w-full px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 focus-ring text-sm resize-none transition-all" />
             </div>
             <button onClick={() => updateMutation.mutate({ name, description })} disabled={updateMutation.isPending}
               className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-medium text-sm transition-all disabled:opacity-50">
@@ -68,9 +68,9 @@ export default function ProjectSettingsModal({ project, onClose }) {
             <h3 className="text-sm font-semibold text-surface-400 uppercase tracking-wider">Team Members</h3>
             <div className="flex gap-2">
               <input value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="User's email address"
-                className="flex-1 px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm" />
+                className="flex-1 px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 focus-ring text-sm transition-all" />
               <button onClick={() => inviteEmail && inviteMutation.mutate(inviteEmail)} disabled={!inviteEmail || inviteMutation.isPending}
-                className="px-4 py-2.5 bg-surface-700 hover:bg-surface-600 text-white rounded-xl font-medium text-sm transition-all disabled:opacity-50 flex items-center gap-2">
+                className="px-4 py-3 bg-surface-700 hover:bg-surface-600 text-white rounded-xl font-medium text-sm transition-all disabled:opacity-50 flex items-center gap-2">
                 <UserPlus className="w-4 h-4" /> Invite
               </button>
             </div>

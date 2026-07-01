@@ -68,9 +68,9 @@ export default function TaskDetailModal({ taskId, projectId, members, onClose })
   const priorityColors = { low: 'text-emerald-400', medium: 'text-amber-400', high: 'text-orange-400', urgent: 'text-red-400' };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-50" onClick={onClose}>
-      <div className="w-full max-w-xl glass h-full animate-slideInRight overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="p-6 space-y-6">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex justify-end z-50" onClick={onClose}>
+      <div className="w-full max-w-xl glass-premium h-full animate-slideInRight overflow-y-auto border-l border-surface-700/50 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="p-6 space-y-8">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -97,7 +97,7 @@ export default function TaskDetailModal({ taskId, projectId, members, onClose })
           </div>
 
           {/* Meta */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 animate-slideUp" style={{ animationDelay: '100ms', opacity: 0, animationFillMode: 'forwards' }}>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Flag className={`w-4 h-4 ${priorityColors[task.priority]}`} />
@@ -131,12 +131,12 @@ export default function TaskDetailModal({ taskId, projectId, members, onClose })
           </div>
 
           {/* Description */}
-          <div>
+          <div className="animate-slideUp" style={{ animationDelay: '200ms', opacity: 0, animationFillMode: 'forwards' }}>
             <h3 className="text-sm font-semibold text-surface-400 mb-2">Description</h3>
             {editing === 'desc' ? (
               <textarea autoFocus value={editValue} onChange={(e) => setEditValue(e.target.value)}
                 onBlur={() => updateMutation.mutate({ description: editValue })}
-                className="w-full px-3 py-2 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none" rows={4} />
+                className="w-full px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-200 text-sm focus-ring resize-none transition-all" rows={4} />
             ) : (
               <p className="text-sm text-surface-300 cursor-pointer hover:text-surface-200 transition bg-surface-800/30 rounded-xl p-3 min-h-[60px]"
                 onClick={() => { setEditing('desc'); setEditValue(task.description || ''); }}>
@@ -146,7 +146,7 @@ export default function TaskDetailModal({ taskId, projectId, members, onClose })
           </div>
 
           {/* Attachments */}
-          <div>
+          <div className="animate-slideUp" style={{ animationDelay: '300ms', opacity: 0, animationFillMode: 'forwards' }}>
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold text-surface-400 flex items-center gap-1.5">
                 <Paperclip className="w-4 h-4" /> Attachments ({task.attachments?.length || 0})
@@ -169,14 +169,14 @@ export default function TaskDetailModal({ taskId, projectId, members, onClose })
           </div>
 
           {/* Comments */}
-          <div>
+          <div className="animate-slideUp" style={{ animationDelay: '400ms', opacity: 0, animationFillMode: 'forwards' }}>
             <h3 className="text-sm font-semibold text-surface-400 flex items-center gap-1.5 mb-3">
               <MessageSquare className="w-4 h-4" /> Comments ({comments.length})
             </h3>
             <div className="flex gap-2 mb-4">
               <input value={commentText} onChange={(e) => setCommentText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && commentText.trim() && commentMutation.mutate(commentText.trim())}
-                className="flex-1 px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm"
+                className="flex-1 px-4 py-3 bg-surface-900/50 border border-surface-700 rounded-xl text-surface-100 placeholder-surface-500 focus-ring text-sm transition-all"
                 placeholder="Write a comment..." />
               <button onClick={() => commentText.trim() && commentMutation.mutate(commentText.trim())} disabled={!commentText.trim()}
                 className="p-2.5 rounded-xl bg-primary-600 hover:bg-primary-500 text-white disabled:opacity-30 transition">
